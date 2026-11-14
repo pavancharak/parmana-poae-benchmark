@@ -120,3 +120,19 @@ The eight phases and their gates are in [`specification/research-roadmap.md`](sp
 ## 8. Next step
 
 Gate G1: the owner reviews the Phase 1 specification. Phase 2 (benchmark foundation) does not start until G1 is passed.
+
+## 9. Moved from parmana-core (14 November 2026)
+
+Everything PoAE that was in `parmana-core` now lives here:
+
+| Path | Moved from (in parmana-core, before commit 074895bd) |
+| --- | --- |
+| `runner/poae-benchmark.test.ts` | `tests/assurance/poae/poae-benchmark.test.ts` |
+| `runner/scenarios.test.ts` | `tests/assurance/poae/scenarios.test.ts` (last version, commit 51095929), paths adapted |
+| `archive/plan-section-12-poae-review.md` | Section 12 of `docs/ASSURANCE_TESTING_PLAN.md` |
+| `archive/decision-D6.md` | Decision D6 in `docs/ASSURANCE_DECISIONS.md` |
+| `archive/results-poae-entries.md` | The three PoAE benchmark entries in `docs/ASSURANCE_RESULTS.md` |
+
+**The runner depends on parmana-core.** It imports the product packages from `packages/` in `parmana-core`, so it does not run from this repository alone. To run it, check out `parmana-core` and copy the runner to `tests/assurance/poae/` there. Its results are valid only for that checkout's commit. The copy here is a reference, not a second live test.
+
+The benchmark is no longer part of `parmana-core`'s CI gate.
