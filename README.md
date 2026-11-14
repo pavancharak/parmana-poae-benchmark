@@ -129,7 +129,15 @@ The eight phases and their gates are in [`specification/research-roadmap.md`](sp
 
 ## 8. Next step
 
-Gate G1 passed on 14 November 2026. Phase 2 (benchmark foundation) is under way.
+Gate G1 passed on 14 November 2026 (owner approval). Phase 2 (benchmark foundation) is under way. In order:
+
+1. **Owner:** merge the open pull requests [#8](https://github.com/pavancharak/parmana-poae-benchmark/pull/8) (fixed clock) and [#9](https://github.com/pavancharak/parmana-poae-benchmark/pull/9) (docs and fixtures), if accepted.
+2. **Owner:** gate G2 review of the 30 scenario definitions in [`scenarios/definitions.md`](scenarios/definitions.md).
+3. **Owner:** confirm the capability name for the grant fixtures. They use the placeholder `TransferFunds`. The Razorpay refund capability in `parmana-core` is `razorpay:refund`, bound to `customer-refund` in [pull request 635 of parmana-core](https://github.com/pavancharak/parmana-core/pull/635), which is not merged yet.
+4. **Runner:** read the policy and grant fixtures, rather than building its own grant registry.
+5. **Mutations and results:** implement mutation operators M01 to M12 ([`specification/mutation-operators.md`](specification/mutation-operators.md)), and produce result records under [`results/`](results/) using the fixed format.
+
+Phases 4 to 8 have not started.
 
 ## 9. Moved from parmana-core (14 November 2026)
 
