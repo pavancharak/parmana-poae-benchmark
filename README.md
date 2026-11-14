@@ -1,5 +1,7 @@
 # parmana-poae-benchmark
 
+> **Where PoAE lives.** Everything regarding Proof of Authorized Execution (PoAE) belongs in this repository: the research specification, the scenarios, the benchmark runner, the CI workflow, the decisions and the results. PoAE material is not kept in `parmana-core`. That repository holds the product only, and it is referenced here by a pinned commit.
+
 **Proof of Authorized Execution (PoAE)**: a research programme testing whether an outside party can check that an autonomous action stayed within the authority a business declared, even when parts of the infrastructure are compromised.
 
 **Owner:** Pavan Charak.
