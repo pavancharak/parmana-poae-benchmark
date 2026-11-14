@@ -13,7 +13,10 @@
  * - The fixtures use the legacy allowUnverifiedPolicy path, so the policy
  *   binding is not exercised here.
  */
-import { generateKeyPairSync } from "node:crypto";
+import { createPrivateKey, createPublicKey } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
@@ -74,8 +77,25 @@ class CountingConnector implements Connector {
   }
 }
 
+// Fixed test key material (see fixtures/keys/README.md). The directory is set by
+// POAE_KEYS_DIR; the default is ../fixtures/keys from this file.
+const KEYS_DIR =
+  process.env.POAE_KEYS_DIR ??
+  join(dirname(fileURLToPath(import.meta.url)), "..", "fixtures", "keys");
+
+function fixedPair(name: string) {
+  const privateKey = createPrivateKey(
+    readFileSync(join(KEYS_DIR, `${name}.private.pem`), "utf8"),
+  );
+  const publicKey = createPublicKey(
+    readFileSync(join(KEYS_DIR, `${name}.public.pem`), "utf8"),
+  );
+  return { privateKey, publicKey };
+}
+
+/** The signer's fixed key pair. */
 function keys() {
-  return generateKeyPairSync("ed25519");
+  return fixedPair("signer");
 }
 
 async function signed(
@@ -233,7 +253,8 @@ describe("PoAE benchmark (implemented tests)", () => {
   });
 
   it("CE-03: an authorization signed by a key outside the trust root is rejected", async () => {
-    const signer = keys();
+    // Signed with the untrusted key; the gateway trusts the signer's public key.
+    const signer = fixedPair("untrusted");
     const trusted = keys();
     const authorization = await signed(signer.privateKey);
     const connector = new CountingConnector();
@@ -553,7 +574,7 @@ describe("PoAE benchmark (additional tests)", () => {
   });
 
   it("CE-01: an altered signed trust record fails offline verification; the original verifies", async () => {
-    const { privateKey, publicKey } = generateKeyPairSync("ed25519");
+    const { privateKey, publicKey } = keys();
     const pem = publicKey.export({ format: "pem", type: "spki" }).toString();
 
     const draft = {

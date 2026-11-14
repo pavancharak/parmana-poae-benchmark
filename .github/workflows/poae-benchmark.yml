@@ -67,4 +67,6 @@ jobs:
           cp poae/runner/poae-benchmark.test.ts core/tests/assurance/poae/
       - name: Run the benchmark
         working-directory: core
+        env:
+          POAE_KEYS_DIR: ${{ github.workspace }}/poae/fixtures/keys
         run: npx vitest run tests/assurance/poae

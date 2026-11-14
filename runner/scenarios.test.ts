@@ -8,10 +8,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 // Evidence paths named in scenarios.json live in parmana-core. Set PARMANA_CORE_ROOT to a checkout of it.
 const coreRoot = process.env.PARMANA_CORE_ROOT ?? join(root, "core");
 const scenarios = JSON.parse(
-  readFileSync(
-    join(root, "scenarios", "scenarios.json"),
-    "utf8",
-  ),
+  readFileSync(join(root, "scenarios", "scenarios.json"), "utf8"),
 ) as {
   statusVocabulary: string[];
   scenarios: {
