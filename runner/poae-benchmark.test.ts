@@ -18,7 +18,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 import {
   ArtifactSigner,
@@ -76,6 +76,21 @@ class CountingConnector implements Connector {
     };
   }
 }
+
+// Fixed clock. The product reads the current time when it signs and when it
+// checks expiry, so the runner fakes only the Date clock for the run. Times are
+// then the same on every run and on every day. No product code is changed.
+const FIXED_NOW = new Date("2026-11-14T12:00:00.000Z");
+const FUTURE = new Date(FIXED_NOW.getTime() + 3_600_000).toISOString();
+
+beforeAll(() => {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(FIXED_NOW);
+});
+
+afterAll(() => {
+  vi.useRealTimers();
+});
 
 // Fixed test key material (see fixtures/keys/README.md). The directory is set by
 // POAE_KEYS_DIR; the default is ../fixtures/keys from this file.
@@ -346,8 +361,6 @@ describe("PoAE benchmark (implemented tests)", () => {
 });
 
 describe("PoAE benchmark (additional tests)", () => {
-  const FUTURE = new Date(Date.now() + 3_600_000).toISOString();
-
   function registry(
     active: Record<string, { grantId: string; validUntil: Date }>,
   ) {

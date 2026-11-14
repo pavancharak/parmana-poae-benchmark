@@ -1,6 +1,6 @@
 # Deterministic fixtures (plan)
 
-**Status:** Keys implemented. Policies, grants and the fixed clock are still planned.
+**Status:** Keys and the fixed clock implemented. Policies and grants are still planned.
 
 The runner in `runner/` currently generates a new key pair on every run (`generateKeyPairSync`). That makes a run reproducible in behaviour, but not byte for byte. Phase 2 requires fixed fixtures:
 
@@ -8,8 +8,6 @@ The runner in `runner/` currently generates a new key pair on every run (`genera
 - fixed policy documents and their content hashes;
 - fixed grant records (active, revoked, expired), with fixed validity times;
 - fixed authorization payloads for each scenario in `scenarios/definitions.md`;
-- a fixed clock for expiry checks, so the same run gives the same result on any day.
-
-Still planned: a fixed clock. The runner's grant tests still compute validity from the current time.
+- a fixed clock for expiry checks. **Done:** the runner sets the Date clock to 2026-11-14T12:00:00Z for the run (vitest fake Date), so no product code changes.
 
 Each fixture file records the commit of `parmana-core` it was generated against. Regenerating a fixture is a reviewed change.
