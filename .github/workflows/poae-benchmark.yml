@@ -1,0 +1,63 @@
+name: PoAE benchmark
+
+# Runs the PoAE benchmark against a pinned parmana-core commit, so every result
+# says exactly which product code it ran against. The runner lives in
+# parmana-core only as a copy kept here in runner/; this workflow copies it into
+# a checkout of parmana-core and runs it.
+
+on:
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # parmana-core commit the benchmark is run against. Change it deliberately,
+  # and record the change in the results.
+  PARMANA_CORE_REF: b7ca914c00acc79b022760e2075cc4d13e28e1b8
+  NODE_VERSION: "24.22.2"
+  VITEST_VERSION: "5.1.0"
+
+jobs:
+  scenarios:
+    name: Scenario definitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Check the 30 scenario definitions
+        run: npx --yes vitest@${{ env.VITEST_VERSION }} run runner/scenarios.test.ts
+
+  runner:
+    name: Benchmark runner against parmana-core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: poae
+      - uses: actions/checkout@v4
+        with:
+          repository: pavancharak/parmana-core
+          ref: ${{ env.PARMANA_CORE_REF }}
+          path: core
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install parmana-core
+        working-directory: core
+        run: npm ci
+      - name: Build parmana-core packages
+        working-directory: core
+        run: npm run build:packages
+      - name: Copy the runner into parmana-core
+        run: |
+          mkdir -p core/tests/assurance/poae
+          cp poae/runner/poae-benchmark.test.ts core/tests/assurance/poae/
+      - name: Run the benchmark
+        working-directory: core
+        run: npx vitest run tests/assurance/poae
