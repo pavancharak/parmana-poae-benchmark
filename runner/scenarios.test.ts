@@ -4,7 +4,9 @@ import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
-const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+// Evidence paths named in scenarios.json live in parmana-core. Set PARMANA_CORE_ROOT to a checkout of it.
+const coreRoot = process.env.PARMANA_CORE_ROOT ?? join(root, "core");
 const scenarios = JSON.parse(
   readFileSync(
     join(root, "scenarios", "scenarios.json"),
@@ -56,7 +58,7 @@ describe("PoAE scenario definitions (Phase 2)", () => {
     for (const s of scenarios.scenarios.filter(
       (x) => x.status === "elsewhere",
     )) {
-      expect(existsSync(join(root, s.evidence!)), s.id).toBe(true);
+      expect(existsSync(join(coreRoot, s.evidence!)), s.id).toBe(true);
     }
   });
 
