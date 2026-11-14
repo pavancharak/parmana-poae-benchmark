@@ -27,10 +27,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: pavancharak/parmana-core
+          ref: ${{ env.PARMANA_CORE_REF }}
+          path: core
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Check the 30 scenario definitions
+        env:
+          PARMANA_CORE_ROOT: ${{ github.workspace }}/core
         run: npx --yes vitest@${{ env.VITEST_VERSION }} run runner/scenarios.test.ts
 
   runner:
