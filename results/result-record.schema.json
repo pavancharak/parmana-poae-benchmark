@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PoAE result record",
+  "description": "One record per scenario per run. A scenario that did not run is recorded as not_run, with a reason. Expected values are not evidence; only observed outcomes are.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "scenarioId",
+    "parmanaCoreCommit",
+    "runnerCommit",
+    "environment",
+    "startedAt",
+    "outcome",
+    "observed",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "scenarioId": { "type": "string", "pattern": "^T(0[1-9]|[12][0-9]|30)$" },
+    "benchmarkId": {
+      "type": ["string", "null"],
+      "description": "The runner test ID, for example XM-01, or null if none."
+    },
+    "parmanaCoreCommit": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+    "runnerCommit": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+    "environment": {
+      "type": "object",
+      "required": ["node", "vitest", "os"],
+      "properties": {
+        "node": { "type": "string" },
+        "vitest": { "type": "string" },
+        "os": { "type": "string" }
+      }
+    },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "outcome": { "enum": ["passed", "failed", "not_run", "not_implemented"] },
+    "expected": { "type": "string" },
+    "observed": {
+      "type": "string",
+      "description": "What the run actually showed. Required even when not_run: the reason."
+    },
+    "limitations": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,37 @@
+{
+  "fixtureNote": "Test-only grant records. Times are fixed. The benchmark's fixed clock is 2026-11-14T12:00:00Z.",
+  "grants": [
+    {
+      "grantId": "grant-active",
+      "callerId": "agent-a",
+      "capability": "TransferFunds",
+      "limits": {},
+      "validFrom": "2026-11-01T00:00:00.000Z",
+      "validUntil": "2026-12-31T00:00:00.000Z",
+      "status": "active",
+      "grantedAt": "2026-11-01T00:00:00.000Z"
+    },
+    {
+      "grantId": "grant-revoked",
+      "callerId": "agent-a",
+      "capability": "TransferFunds",
+      "limits": {},
+      "validFrom": "2026-11-01T00:00:00.000Z",
+      "validUntil": "2026-12-31T00:00:00.000Z",
+      "status": "revoked",
+      "grantedAt": "2026-11-01T00:00:00.000Z",
+      "revokedAt": "2026-11-13T00:00:00.000Z",
+      "revokedByChangeId": "change-revoke-1"
+    },
+    {
+      "grantId": "grant-expired",
+      "callerId": "agent-a",
+      "capability": "TransferFunds",
+      "limits": {},
+      "validFrom": "2026-10-01T00:00:00.000Z",
+      "validUntil": "2026-11-10T00:00:00.000Z",
+      "status": "active",
+      "grantedAt": "2026-10-01T00:00:00.000Z"
+    }
+  ]
+}
