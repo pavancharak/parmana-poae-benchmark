@@ -6,7 +6,7 @@
 
 | Phase | Work                                                                                  | Gate | Gate criterion                                  | Status                                                           |
 | ----- | ------------------------------------------------------------------------------------- | ---- | ----------------------------------------------- | ---------------------------------------------------------------- |
-| 1     | Research specification (these documents)                                              | G1   | Specification reviewed by the owner             | In review                                                        |
+| 1     | Research specification (these documents)                                              | G1   | Specification reviewed by the owner             | Passed 14 November 2026 (owner approval)                         |
 | 2     | Benchmark foundation: 30 scenarios documented, fixtures, machine-readable definitions | G2   | All 30 scenarios documented in the threat model | Not started (the 30 are in the threat model draft)               |
 | 3     | Implement the scenarios, mutation operators, evidence tests                           | G3   | Scenarios implemented and reproducible          | 18 implemented, 2 elsewhere, 1 gap, 1 partly, 8 not implemented. |
 | 4     | Formal model (TLA+ or equivalent), safety properties, counterexamples                 | G4   | Model and counterexamples evaluated             | Not started                                                      |
