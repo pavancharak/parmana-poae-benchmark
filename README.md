@@ -110,16 +110,22 @@ The eight phases and their gates are in [`specification/research-roadmap.md`](sp
 - **Ledger connection and external checkpoint:** reconciliation exists as a pure function, not yet connected to a ledger. Without an external checkpoint, deletion detection can be undone by whoever controls the database (decision D11).
 - **Authority version:** not bound (decision D12, owner).
 - **Policy change after approval:** the benchmark denies a changed policy. The owner has not yet ratified that behaviour.
+- **Policies and grants fixtures:** still planned. The keys and the fixed clock are done.
+- **Result records:** no machine-readable result format yet. Results live in `parmana-core`'s results log.
 - **Formal model, compromise tests, zero-knowledge work:** not started (Phases 4 to 6).
 
 ## 7. Files
 
-| Path                                                         | Contents                                      |
-| ------------------------------------------------------------ | --------------------------------------------- |
-| [`specification/`](specification/README.md)                  | Phase 1 research specification                |
-| [`scenarios/`](scenarios/README.md)                          | The 30 scenarios as JSON                      |
-| [`benchmark-spec.md`](benchmark-spec.md)                     | The 20-test subset run to date, with results  |
-| [`EXECUTION_RECEIPT_DESIGN.md`](EXECUTION_RECEIPT_DESIGN.md) | Design of the execution correspondence record |
+| Path                                                                           | Contents                                                                                                       |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| [`specification/`](specification/README.md)                                    | Phase 1 research specification (gate G1 passed)                                                                |
+| [`scenarios/`](scenarios/README.md)                                            | The 30 scenarios as JSON, and their written definitions (`definitions.md`)                                     |
+| [`runner/`](runner/)                                                           | The benchmark runner and the scenario consistency test. The runner needs `parmana-core` to run                 |
+| [`fixtures/`](fixtures/README.md)                                              | Test-only key pairs (`fixtures/keys/`) and the fixtures plan                                                   |
+| [`.github/workflows/poae-benchmark.yml`](.github/workflows/poae-benchmark.yml) | CI: scenario check, and the runner against a pinned `parmana-core` commit                                      |
+| [`archive/`](archive/)                                                         | PoAE material moved from `parmana-core`: the plan review, decision D6, and the three benchmark results entries |
+| [`benchmark-spec.md`](benchmark-spec.md)                                       | The 20-test subset run to date, with results                                                                   |
+| [`EXECUTION_RECEIPT_DESIGN.md`](EXECUTION_RECEIPT_DESIGN.md)                   | Design of the execution correspondence record                                                                  |
 
 ## 8. Next step
 
@@ -140,3 +146,28 @@ Everything PoAE that was in `parmana-core` now lives here:
 **The runner depends on parmana-core.** It imports the product packages from `packages/` in `parmana-core`, so it does not run from this repository alone. To run it, check out `parmana-core` and copy the runner to `tests/assurance/poae/` there. Its results are valid only for that checkout's commit. The copy here is a reference, not a second live test.
 
 The benchmark is no longer part of `parmana-core`'s CI gate.
+
+## 10. Deliverable status
+
+Checked against the files on `main`. "Done" means the file exists and, where it can be run, it passes.
+
+| Phase | Deliverable                                                                                                         | Status                                                                                                                                                     |
+| ----- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | Research specification (questions, hypotheses, properties, threats, invariants, methodology, architecture, roadmap) | Done. Gate G1 passed on owner approval, 14 November 2026.                                                                                                  |
+| 2     | 30 scenarios documented (gate G2)                                                                                   | Written in `scenarios/definitions.md`. Gate G2 review: not yet recorded.                                                                                   |
+| 2     | Machine-readable scenario definitions                                                                               | Done: `scenarios/scenarios.json`, checked by `runner/scenarios.test.ts`                                                                                    |
+| 2     | Deterministic fixtures: keys                                                                                        | Done: `fixtures/keys/`                                                                                                                                     |
+| 2     | Deterministic fixtures: fixed clock                                                                                 | Done: set by the runner for each run                                                                                                                       |
+| 2     | Deterministic fixtures: policies, grants, authorization payloads                                                    | Not done. Planned in `fixtures/README.md`.                                                                                                                 |
+| 2     | Benchmark repository structure per the plan (`src/`, `experiments/`, `mutations/`, `results/`, `benchmark/`)        | Not done. The current layout is `runner/`, `fixtures/`, `scenarios/`, `specification/`, `archive/`.                                                        |
+| 2     | Runner in CI, pinned to a `parmana-core` commit                                                                     | Done: `.github/workflows/poae-benchmark.yml`. It passed before the fixed keys and clock; the next CI run on `main` has not yet been checked                |
+| 3     | The 30 scenarios implemented                                                                                        | 18 implemented and passing against `parmana-core`. T09 and T14 covered elsewhere. T04 gap. T29 partial. 8 not implemented. See `scenarios/definitions.md`. |
+| 3     | Mutation operators                                                                                                  | Not started                                                                                                                                                |
+| 3     | Result records in a fixed machine-readable format                                                                   | Not started                                                                                                                                                |
+| 4     | Formal protocol model                                                                                               | Not started                                                                                                                                                |
+| 5     | Compromise, recovery and completeness tests                                                                         | Not started                                                                                                                                                |
+| 6     | Zero-knowledge feasibility                                                                                          | Not started (may be deferred)                                                                                                                              |
+| 7     | Independent reproduction in a clean environment                                                                     | Not started                                                                                                                                                |
+| 8     | Paper with every claim traced to evidence                                                                           | Not started                                                                                                                                                |
+
+The gaps that block Phase 3 are the decisions D10 to D12 in `parmana-core`'s open items, and the eight scenarios that are not implemented.
