@@ -3,7 +3,7 @@
 **Proof of Authorized Execution (PoAE)**: a research programme testing whether an outside party can check that an autonomous action stayed within the authority a business declared, even when parts of the infrastructure are compromised.
 
 **Owner:** Pavan Charak.
-**Status:** Phase 1 (research specification) is in review at gate G1. No benchmark result in this repository is final.
+**Status:** Phase 1 (research specification) passed gate G1 on 14 November 2026, on owner approval. Phase 2 is under way. No benchmark result in this repository is final.
 
 ## 1. Objective
 
